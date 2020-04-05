@@ -98,7 +98,7 @@ export class PatientAppointmentAddComponent implements OnInit {
 
   }
 
-  updateappointment(value: any): void {
+  updateappointment(): void {
     console.log(this.addappointment.getRawValue());
     this._patientService.createanotherappointment(this.addappointment.getRawValue(), this.checkuser)
       .subscribe(data => console.log(data));

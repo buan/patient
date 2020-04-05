@@ -17,6 +17,7 @@ export class PatientAddDoctorComponent implements OnInit {
   showmedicalexecutive: boolean = false;
   showaddoctor: boolean = false;
   mesavedstatus: boolean = false;
+  disablestatus: boolean = false;
 
   constructor(private _patientService: PatientServicesService) { }
 
