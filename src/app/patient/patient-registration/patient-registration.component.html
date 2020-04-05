@@ -1,0 +1,331 @@
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" [style.display]="showModal ? 'block' : 'none'" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="container-fluid">
+
+    <form [formGroup]="patientForm" (ngSubmit)="onSubmit()">
+        <div class="card mt-2">
+
+            <div class="card-header">
+                <h3 class="card-title">Patient Details</h3>
+            </div>
+            <div class="alert alert-success mt-2 mb-1 mx-2 fade show" role="alert" *ngIf="patientsavedstatus">
+                <strong> Patient Details saved</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="form-group mx-3">
+                <label for="regnum">Registration Number</label>
+                <input type="text" formControlName="PatientRegistration" class="form-control" id="regnum"
+                    aria-describedby="regnum">
+
+            </div>
+            <div class="form-group mx-3">
+                <label for="patientname"> Name</label>
+                <input type="text" [ngClass]="{'border-danger': formErrors.PatientName}" formControlName="PatientName"
+                    class="form-control" id="patientname" placeholder="Enter Patient Name"
+                    (blur)="logValidationErrors()">
+                <span *ngIf="formErrors.PatientName" [ngClass]="{'text-danger': formErrors.PatientName}">
+
+                    {{formErrors.PatientName}}
+
+                </span>
+            </div>
+
+            <div class="row">
+                <div class="col-md">
+                    <div class="form-group mx-3">
+                        <label for="PatientContactNumber">Contact Number</label>
+                        <input type="text" formControlName="PatientContactNumber" class="form-control"
+                            id="PatientContactNumber" placeholder="Enter Patient Contact Number"
+                            (blur)="logValidationErrors()">
+                      
+                    </div>
+                </div>
+
+                
+                <div class="col-md">
+                    <div class="form-group mx-3">
+                        <label for="PatientAge">Age</label>
+                        <input type="text" numbersOnly formControlName="PatientAge" class="form-control" id="PatientAge"
+                            placeholder="Enter Patient Age" [ngClass]="{'border-danger': formErrors.PatientAge}"
+                            (blur)="logValidationErrors()">
+                        <span *ngIf="formErrors.PatientAge" [ngClass]="{'text-danger': formErrors.PatientAge}">
+
+                            {{formErrors.PatientAge}}
+
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-group mx-3 form-inline">
+                        <legend class="col-form-label">Sex</legend>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" formControlName="PatientGender" type="radio"
+                                name="PatientGender" id="exampleRadios1" value="Male" checked>
+                            <label class="form-check-label" for="exampleRadios1">
+                                Male
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" formControlName="PatientGender" type="radio"
+                                name="PatientGender" id="exampleRadios2" value="Female ">
+                            <label class="form-check-label" for="exampleRadios2">
+                                Female
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="form-group mx-3">
+                <div class="row">
+                    <div class="col-md-8">
+                        <label for="PatientAddress">Address</label>
+                        <textarea formControlName="PatientAddress" class="form-control" id="PatientAddress" rows="3"
+                            [ngClass]="{'border-danger': formErrors.PatientAddress}" (blur)="logValidationErrors()"></textarea>
+                        <span *ngIf="formErrors.PatientAddress" [ngClass]="{'text-danger': formErrors.PatientAddress}">
+        
+                            {{formErrors.PatientAddress}}
+        
+                        </span>
+                    </div>
+                    <div class="col-md-4 mt-2">
+                        <div class="form-group">
+                            <label for="exampleFormControlFile1">Patient Referred Prescription</label>
+                            <input type="file"  formControlName="PatientReferredPrescription" class="mt-2 form-control-file"  (change)="onFileSelected($event)" id="exampleFormControlFile1">
+
+                            
+                          </div>
+                    </div>
+                </div>
+              
+               
+            </div>
+
+            <div formGroupName="PatientClinicSource" class="form-inline">
+                <label class="mx-3">Clinic Source</label>
+                <div class="form-check form-check-inline ml-3">
+                    <input class="form-check-input" formControlName="Doctor" type="checkbox" id="advertisement"
+                        value="option1">
+                    <label class="form-check-label" for="Doctor">Doctor</label>
+                </div>
+                <div class="form-check form-check-inline ml-3">
+                    <input class="form-check-input" formControlName="Hospital" type="checkbox" id="Hospital"
+                        value="option2">
+                    <label class="form-check-label" for="Hospital">Hospital</label>
+                </div>
+
+                
+                <div class="form-check form-check-inline ml-3">
+                    <input class="form-check-input" formControlName="NursingHome" type="checkbox" id="others" value="option3"
+                        >
+                    <label class="form-check-label" for="others">Nursing Home</label>
+                </div>
+                <div class="form-check form-check-inline ml-3">
+                    <input class="form-check-input" formControlName="Polyclinic" type="checkbox" id="others" value="option3"
+                        >
+                    <label class="form-check-label" for="Polyclinic">Polyclinic</label>
+                </div>
+                <div class="form-check form-check-inline ml-3">
+                    <input class="form-check-input" formControlName="MedicineShop" type="checkbox" id="others" value="option3">
+                    <label class="form-check-label" for="Medicine Shop">Medicine Shop</label>
+                </div>
+                <div class="form-check form-check-inline ml-3">
+                    <input class="form-check-input" formControlName="RelativeFriend" type="checkbox" id="others" value="option3">
+                    <label class="form-check-label" for="RelativeFriend">Relative/Friend</label>
+                </div>
+                <div class="form-check form-check-inline ml-3">
+                    <input class="form-check-input" formControlName="ClinicSignBoard" type="checkbox" id="others" value="option3"
+                        >
+                    <label class="form-check-label" for="Clinic SignBoard">Clinic SignBoard</label>
+                </div>
+                <div class="form-check form-check-inline ml-3">
+                    <input class="form-check-input" formControlName="FlexBanner" type="checkbox" id="others" value="option3"
+                        >
+                    <label class="form-check-label" for="Flex/Banner">Flex/Banner</label>
+                </div>
+                <div class="form-check form-check-inline ml-3">
+                    <input class="form-check-input" formControlName="LeafletFlyers" type="checkbox" id="others" value="option3"
+                        >
+                    <label class="form-check-label" for="Leaflet/Flyers">Leaflet/Flyers</label>
+                </div>
+                <div class="form-check form-check-inline ml-3">
+                    <input class="form-check-input" formControlName="Newspaper" type="checkbox" id="others" value="option3"
+                        >
+                    <label class="form-check-label" for="Newspaper">Newspaper</label>
+                </div>
+                <div class="form-check form-check-inline ml-3">
+                    <input class="form-check-input" formControlName="ElectronicMedia" type="checkbox" id="others" value="option3"
+                        >
+                    <label class="form-check-label" for="Electronic Media">Electronic Media</label>
+                </div>
+                <div class="form-check form-check-inline ml-3">
+                    <input class="form-check-input" formControlName="Website" type="checkbox" id="others" value="option3"
+                        >
+                    <label class="form-check-label" for="Website">Website</label>
+                </div>
+                <div class="form-check form-check-inline ml-3">
+                    <input class="form-check-input" formControlName="Facebook" type="checkbox" id="others" value="option3"
+                       >
+                    <label class="form-check-label" for="Facebook">Facebook</label>
+                </div>
+                <div class="form-check form-check-inline ml-3">
+                    <input class="form-check-input" formControlName="SocialMedia" type="checkbox" id="others" value="option3"
+                       >
+                    <label class="form-check-label" for="SocialMedia">Social Media</label>
+                </div>
+                <div class="form-check form-check-inline ml-3">
+                    <input class="form-check-input" formControlName="Others" (change)="showothersreasonbox" type="checkbox" id="others" value="option3"
+                       >
+                    <label class="form-check-label" for="Others">Others</label>
+                </div>
+                <div class="form-group ml-3 mb-2" *ngIf="showothersreason">
+                    <input class="form-control" formControlName="othersreason" type="text" id="others" value="option3">
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <br>
+        <br>
+
+        <div class="card mt-2">
+            <div class="card-header">
+                <h3 class="card-title">Patient Appointment Details</h3>
+            </div>
+
+            <div class="row">
+                <!-- <div class="col-md">
+                    <div class="form-group mx-3 mt-2">
+                        <label>Patient Appointment Date</label>
+                        <br>
+                        <mat-form-field>
+                            <mat-label>Choose a date</mat-label>
+                            <input matInput [matDatepicker]="picker" formControlName="PatientAppointmentDate">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div> -->
+                <div class="col-md">
+                    <div class="form-group mx-3 mt-2">
+                        <label for="VisitingBranch">Visiting Branch</label>
+                        <select [ngClass]="{'border-danger': formErrors.VisitingBranch}" (blur)="logValidationErrors()" formControlName="VisitingBranch" class="form-control" id="VisitingBranch">
+                            <option value="" disabled>Select</option>
+                            <option *ngFor="let branch of branches" value={{branch.name}}>{{branch.name}}</option>
+                        </select>
+                        <span *ngIf="formErrors.VisitingBranch" [ngClass]="{'text-danger': formErrors.VisitingBranch}">
+
+                            {{formErrors.VisitingBranch}}
+        
+                        </span>
+                    </div>
+                    
+                </div>
+
+                <div class="col-md">
+                    <div class="form-group mx-3 mt-2">
+                        <label for="PatientReferredBy">Patient Referred By</label>
+                        <select formControlName="PatientReferredBy" [ngClass]="{'border-danger': formErrors.PatientReferredBy}" (blur)="logValidationErrors()" class="form-control" id="PatientReferredBy">
+                            <option value="" disabled>Select</option>
+                            <option *ngFor="let patientreferrer of patientreferred" value={{patientreferrer.name}}>
+                                {{patientreferrer.name}}</option>
+                        </select>
+                        <span *ngIf="formErrors.PatientReferredBy" [ngClass]="{'text-danger': formErrors.PatientReferredBy}">
+
+                            {{formErrors.PatientReferredBy}}
+        
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-md">
+                    <div class="form-group mx-3 mt-2">
+                        <label for="SelectDepartment">Select Department</label>
+                        <select [ngClass]="{'border-danger': formErrors.SelectDepartment}" (blur)="logValidationErrors()" formControlName="SelectDepartment" #dvalue (change)="changeddepartment(dvalue)"
+                            class="form-control" id="SelectDepartment">
+                            <option value="" disabled>Select</option>
+                            <option *ngFor="let department of departments" value={{department.name}}>
+                                {{department.name}}</option>
+                        </select>
+
+                        <span *ngIf="formErrors.SelectDepartment" [ngClass]="{'text-danger': formErrors.SelectDepartment}">
+
+                    {{formErrors.SelectDepartment}}
+
+                </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- <div class="col-md-4">
+                    <div class="form-group mx-3">
+                        <label for="SelectDepartment">Select Department</label>
+                        <select formControlName="SelectDepartment" #dvalue (change)="changeddepartment(dvalue)" class="form-control" id="SelectDepartment">
+                            <option value="" disabled>Select</option>
+                            <option *ngFor="let department of departments" value={{department.name}}>
+                                {{department.name}}</option>
+                        </select>
+                    </div>
+                </div> -->
+                <div class="col-md-4" *ngIf="showpurpose">
+                    <div class="form-group mx-3">
+                        <label for="PurposeofVisit">Purpose of Visit</label>
+                        <select formControlName="PurposeofVisit" #pvalue (change)="changedpurpose(pvalue.value)"
+                            class="form-control" id="PurposeofVisit">
+                            <option value="" disabled>Select</option>
+                            <option *ngFor="let purposes of purpose" value={{purposes.name}}>
+                                {{purposes.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4" *ngIf="showtreatmenttype">
+                    <div class="form-group mx-3">
+                        <label for="TreatmentType<">Treatment Type</label>
+                        <select formControlName="TreatmentType" multiple #dvalue (change)="treatmentype(dvalue.value)"
+                            class="form-control" id="TreatmentType">
+                            <option value="" disabled>Select</option>
+                            <option *ngFor="let treatments of treatment" value={{treatments.field_treatment_name}}>
+                                {{treatments.field_treatment_name}}</option>
+                        </select>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <button type="submit" [disabled]="patientForm.invalid" class="btn btn-primary">Submit</button>
+                <button type="button" class="ml-2 btn btn-info" (click)="loadvalues()" data-toggle="modal" data-target="#exampleModal">Load Data</button>
+            </div>
+
+        </div>
+
+    </form>
+</div>

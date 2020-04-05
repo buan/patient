@@ -1,0 +1,34 @@
+<div class="container-fluid">
+  <nav class="navbar navbar-expand-lg navbar-light bg-primary ">
+    <a class="text-white navbar-brand" href="#">
+      <img src="../assets/images/copy.jpg" width="40px" height="40px" class="d-inline-block align-top" alt="">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        
+        <li class="nav-item">
+          <a routerLinkActive="font-weight-bold" routerLink="create" class="nav-link text-white" href="#">Register Patient</a>
+        </li>
+
+        <li class="nav-item">
+          <a routerLinkActive="font-weight-bold" routerLink="addappointment" class="nav-link text-white" href="#">Patient Services</a>
+        </li>
+
+        <li class="nav-item">
+          <a routerLinkActive="font-weight-bold" routerLink="search" class="nav-link text-white" href="#">Search Patient</a>
+        </li>
+
+        <li class="nav-item">
+          <a routerLinkActive="font-weight-bold" routerLink="add-doctor" class="nav-link text-white" href="#">Add Doctor</a>
+        </li>
+
+      </ul>
+   
+    </div>
+  </nav>
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,84 @@
+<div class="container mt-3">
+    <div class="row">
+        <div class="col text-center ">
+            <div class="btn-group " role="group">
+                <button type="button" class="btn btn-secondary mr-2 btn-info" (click)="addme()">
+                    Add Medical Executive</button>
+                <button type="button" class="btn btn-secondary mr-2 btn-info" (click)="adddoc()">Add
+                    Doctor</button>
+            </div>
+        </div>
+
+    </div>
+    <div class="card mt-3" *ngIf="showaddoctor">
+        <div class="card-header">
+           Add Doctor
+        </div>
+        <div class="card-body">
+            <div class="alert mt-2 alert-success" role="alert" *ngIf="doctorsavedstatus">
+                <strong>Doctor Name</strong> Added
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-5">
+                        <label for="exampleInputEmail1">Enter Doctor Name</label>
+                        <input type="text" [(ngModel)]="dname1" class="form-control" #dnamevalue1 id="exampleInputEmail1"
+                            [disabled]="disablestatus" aria-describedby="emailHelp">
+            
+                    </div>
+            
+                    <div class="col-md-5">
+                        <label for="exampleFormControlSelect1">Select Marketing Executive</label>
+                        <select class="form-control" [(ngModel)]="me" #mevalue id="exampleFormControlSelect1">
+                            <option value="" disabled selected="selected">Select</option>
+                            <option *ngFor="let me of mes" value={{me.tid}}>{{me.name}}</option>
+                        </select>
+                    </div>
+            
+                    <div class="col-md-2 mt-4"> <button type="button" [disabled]="dnamevalue1.value && mevalue.value?false:true"
+                            class=" mt-2 btn btn-primary" (click)="doctoradd(dnamevalue1,mevalue)">Add</button></div>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-3" *ngIf="showmedicalexecutive">
+        <div class="card-header">
+           Add Medical Executive
+        </div>
+        <div class="card-body">
+            <div class="alert mt-2 alert-success" role="alert" *ngIf="mesavedstatus">
+                <strong>Medical Executive</strong> Added
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-10">
+                        <label for="exampleInputEmail1">Enter Medical Executive</label>
+                        <input type="text" [(ngModel)]="dname2" class="form-control" #dnamevalue2 id="exampleInputEmail1"
+                            [disabled]="disablestatus" aria-describedby="emailHelp">
+            
+                    </div>
+            
+            
+            
+                    <div class="col-md-2 mt-4"> <button type="button" [disabled]="dnamevalue2.value?false:true"
+                            class=" mt-2 btn btn-primary" (click)="medicalexecutiveadd(dnamevalue2)">Add</button></div>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+   
+</div>
+
+
+

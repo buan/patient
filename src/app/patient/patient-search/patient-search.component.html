@@ -1,0 +1,13 @@
+<div class="form-group">
+    <div class="row">
+        <div class="col-md-10">
+            <label for="exampleInputEmail1">Enter Patient ID</label>
+            <input type="text" [(ngModel)]="dynamic_content" class="form-control" #regvalue id="exampleInputEmail1"
+                [disabled]="disablestatus" aria-describedby="emailHelp">
+
+        </div>
+        <div class="col-md-2 mt-4"> <button type="button" [disabled]="regvalue.value?false:true"
+                class=" mt-2 btn btn-primary" (click)="patientValidate(regvalue.value)">Validate</button></div>
+    </div>
+
+</div>
