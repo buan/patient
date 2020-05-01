@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IEmployee } from './patient';
 import { Observable } from 'rxjs/internal/Observable';
+import { WINDOW } from 'window.providers';
 
 @Injectable({
   providedIn: 'root'
@@ -10,9 +11,12 @@ export class PatientServicesService {
   private _urlforpatientreferred: string = "http://localhost/drupal8dev/doctor-list";
   private _urlforbranch: string = "http://localhost/drupal8dev/branch";
   private _urlfordepartments: string = "http://localhost/drupal8dev/departments";
+  private _urlforcontactfetch: string = "http://localhost/drupal8dev/getcontactdetails";
+  private _urlforappointmentfetch: string = "http://localhost/drupal8dev/appointmentinfo";
   private _urlforpurpose: string = "http://localhost/drupal8dev/purpose";
   private _urlforme: string = "http://localhost/drupal8dev/me";
   private _urlfortreatmenttype: string = "http://localhost/drupal8dev/treatment";
+  private _urlforpatientsearch: string = "http://localhost/drupal8dev/findpatient";
   private _urlforcreatepatient: string = "http://localhost/drupal8dev/entity/user?_format=hal_json";
   private _urlforcreatepatientappointment: string = "http://localhost/drupal8dev/entity/node?_format=hal_json";
   private _urltovalidateuser: string = "http://localhost/drupal8dev/findonepatient";
@@ -21,17 +25,29 @@ export class PatientServicesService {
   private _urltocheckforuploadprescription: string = "http://localhost/drupal8dev/entity/file?_format=hal_json";
   private headers: any = { 'Content-Type': 'application/hal+json', 'Authorization': 'Basic YWRtaW46YWRtaW4=', 'X-CSRF-Token': 'wGq8Jno6Sd8zCNa7I70vV7dWWiZtEtrbRrM9739zwhI' }
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, @Inject(WINDOW) private window: Window) { }
+
+  getHostname(): string {
+    return this.window.location.hostname;
+  }
 
   getPatientReferred(): Observable<IEmployee[]> {
     return this.http.get<IEmployee[]>(this._urlforpatientreferred);
   }
   getBranch(): Observable<IEmployee[]> {
+    console.log(this.getHostname());
     return this.http.get<IEmployee[]>(this._urlforbranch);
   }
 
   getDepartments(): Observable<IEmployee[]> {
     return this.http.get<IEmployee[]>(this._urlfordepartments);
+  }
+
+  getContactinfo(regvalue): Observable<IEmployee[]> {
+    return this.http.get<IEmployee[]>(this._urlforcontactfetch + "/" + regvalue);
+  }
+  getPatientinfo(regvalue): Observable<IEmployee[]> {
+    return this.http.get<IEmployee[]>(this._urlforappointmentfetch + "/" + regvalue);
   }
 
   getpurpose(): Observable<IEmployee[]> {
@@ -44,26 +60,45 @@ export class PatientServicesService {
   gettreatmentype(treatment): Observable<IEmployee[]> {
     return this.http.get<IEmployee[]>(this._urlfortreatmenttype + "/" + treatment);
   }
+  getsearchpatientinfo(patientreg): Observable<IEmployee[]> {
+    console.log(this._urlforpatientsearch + "/" + patientreg);
+    return this.http.get<IEmployee[]>(this._urlforpatientsearch + "/" + patientreg);
+  }
+
+  getsearchappointmentinfo(patientreg): Observable<IEmployee[]> {
+    console.log(this._urlforappointmentfetch + "/" + patientreg);
+    return this.http.get<IEmployee[]>(this._urlforappointmentfetch + "/" + patientreg);
+  }
   validateuser(uid): Observable<IEmployee[]> {
     console.log(this._urltovalidateuser + "/" + uid)
     return this.http.get<IEmployee[]>(this._urltovalidateuser + "/" + uid);
   }
 
-  createpatient(value): Observable<IEmployee[]> {
-    console.log(value.PatientClinicSource);
+  createpatient(value, patient_ref_pres): Observable<IEmployee[]> {
     let totalitemlist = '';
-
+    let patient_ref_info = '';
+    if (patient_ref_pres) {
+      patient_ref_info = patient_ref_pres.fid[0].value;
+    } else {
+      patient_ref_info = '86';
+    }
     Object.keys(value.PatientClinicSource).forEach(item => {
 
-      console.log(item); // key
-      console.log(value.PatientClinicSource[item]); // value
-      if (value.PatientClinicSource[item] == true) {
+      // console.log(item); // key
+      // console.log(value.PatientClinicSource[item]); // value
+      if (value.PatientClinicSource[item] == "true") {
         totalitemlist = item + "+" + totalitemlist;
       }
 
 
     });
-    totalitemlist = totalitemlist.slice(0, -1);
+    if (value.PatientClinicSource.othersreason) {
+      totalitemlist = totalitemlist.slice(0, -1).replace('Others+', '') + "(Other Sources: " + value.PatientClinicSource.othersreason + ")";
+    }
+    else {
+      totalitemlist = totalitemlist.slice(0, -1);
+    }
+
 
     //save as a patient
     let data = {
@@ -90,12 +125,15 @@ export class PatientServicesService {
         "value": 1
       },
       ],
+      "field_patient_referred_prescript": [{ "target_id": patient_ref_info }],
       "field_clinic_source": [{ "value": totalitemlist }],
       "field_patient_name": [{ "value": value.PatientName }],
       "field_patient_address": [{ "value": value.PatientName }],
       "field_patient_age": [{ "value": value.PatientAge }],
       "field_patient_contact_number": [{ "value": value.PatientContactNumber }],
       "field_patient_sex": [{ "value": value.PatientGender }],
+
+
 
 
     };
@@ -274,6 +312,8 @@ export class PatientServicesService {
     return this.http.patch<IEmployee[]>("http://localhost/drupal8dev/user/" + nid + "?_format=hal_json", data, { headers: this.headers });
 
   }
+
+
 
   checkprescription(regvalue): Observable<IEmployee[]> {
     console.log(regvalue);

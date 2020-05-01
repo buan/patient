@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { PatientServicesService } from 'src/app/patient-services.service';
@@ -16,11 +16,9 @@ export class PatientRegistrationComponent implements OnInit {
   showtreatmenttype: boolean = false;
   showothersreason: boolean = false;
   patientsavedstatus: boolean = false;
+  targetmodal: string = "";
   uploadtype: File;
   image: string;
-
-  constructor(private fb: FormBuilder, public datepipe: DatePipe, private _patientService: PatientServicesService, private router: Router) { }
-
   patientForm: FormGroup;
   patientreferred: IEmployee[];
   branches: IEmployee[];
@@ -31,6 +29,10 @@ export class PatientRegistrationComponent implements OnInit {
   treatment: IEmployee[];
   uid: IEmployee[];
   createpatientresult: any;
+  today: number = Date.now();
+  constructor(private fb: FormBuilder, public datepipe: DatePipe, private _patientService: PatientServicesService, private router: Router) { }
+
+
 
 
   formErrors = {
@@ -224,25 +226,55 @@ export class PatientRegistrationComponent implements OnInit {
     myReader.readAsDataURL(file);
   }
 
+  clearform(): void {
+    window.location.reload();
+  }
+
+  shomod(): void {
+    this.targetmodal="#exampleModal1";
+  }
+
   onSubmit(): void {
-    console.log(this.patientForm.getRawValue().PatientReferredPrescription);
+    if (this.uploadtype) {
+      this._patientService.uploadprescription(this.uploadtype.name, this.image, this.uploadtype.type)
+        .subscribe(data => {
+          console.log(data);
 
-    this._patientService.uploadprescription(this.uploadtype.name, this.image, this.uploadtype.type).subscribe(data => console.log(data) )
-    //     this._patientService.createpatient(this.patientForm.getRawValue())
-    //       .subscribe(data => {
-    //         this.createpatientresult = data;
-    //         console.log(this.createpatientresult);
-    //         setTimeout(()=>{  
-    //           this._patientService.createpatientappointment(this.patientForm.getRawValue(),this.createpatientresult)
-    //           .subscribe(data => console.log(this.createpatientresult));
-    //           this.patientsavedstatus=true;
-    //      }, 1000);
-    //      setTimeout(()=>{  
-    //       this.router.navigate(['/search']);
-    //  }, 2000);
+          this._patientService.createpatient(this.patientForm.getRawValue(), data)
+            .subscribe(data => {
+              this.createpatientresult = data;
+              console.log(this.createpatientresult);
+              setTimeout(() => {
+                this._patientService.createpatientappointment(this.patientForm.getRawValue(), this.createpatientresult)
+                  .subscribe(data => console.log(this.createpatientresult));
+                this.patientsavedstatus = true;
+              }, 1000);
 
 
-    //       });
+
+            });
+
+
+
+        })
+    }
+    else {
+      this._patientService.createpatient(this.patientForm.getRawValue(), "")
+      .subscribe(data => {
+        this.createpatientresult = data;
+        console.log(this.createpatientresult);
+        setTimeout(() => {
+          this._patientService.createpatientappointment(this.patientForm.getRawValue(), this.createpatientresult)
+            .subscribe(data => console.log(this.createpatientresult));
+          this.patientsavedstatus = true;
+        }, 1000);
+
+
+
+      });
+    }
+
+
 
   }
 

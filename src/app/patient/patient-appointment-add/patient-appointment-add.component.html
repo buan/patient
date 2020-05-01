@@ -6,11 +6,11 @@
     <div class="row">
         <div class="col-md-10">
             <label for="exampleInputEmail1">Enter Registration ID</label>
-            <input type="text"  class="form-control" #regvalue id="exampleInputEmail1"
+            <input type="text" class="form-control" #regvalue id="exampleInputEmail1"
                 [disabled]="disablestatus" aria-describedby="emailHelp">
 
         </div>
-        <div class="col-md-2 mt-4"> <button type="button" [disabled]="regvalue.value?false:true"
+        <div class="col-md-2 mt-4"> <button type="button" [disabled]="regvalue.value?true:false"
                 class=" mt-2 btn btn-primary" (click)="patientValidate(regvalue.value)">Validate</button></div>
     </div>
 
@@ -35,7 +35,13 @@
 
 <form [formGroup]="addcontact" *ngIf="showdetailsupdate" (ngSubmit)="updatecontact()">
     <div class="card mt-2">
-        <div class="card-header">
+        <div class="alert alert-success alert-dismissible fade show" role="alert" *ngIf="showaddresssaved">
+             Details Updated
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true" (click)="resetcontact()">&times;</span>
+            </button>
+          </div>
+        <div class="card-header mauve-gradient text-white">
             <h5 class="card-title">Update Contact Details</h5>
         </div>
 
@@ -80,8 +86,15 @@
 </form>
 
 <form [formGroup]="addappointment" *ngIf="showappointment" (ngSubmit)="updateappointment()">
+    
     <div class="card mt-2">
-        <div class="card-header">
+        <div class="alert alert-success alert-dismissible fade show" role="alert" *ngIf="showappointmentsaved">
+            Appointment Updated
+           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+             <span aria-hidden="true" (click)="resetappointment()">&times;</span>
+           </button>
+         </div>
+        <div class="card-header mauve-gradient text-white">
             <h5 class="card-title">Patient Appointment Details</h5>
         </div>
 
@@ -165,7 +178,7 @@
 
 
 <div class="card mt-2" *ngIf="showprescription">
-    <h5 class="card-header">Prescription Details</h5>
+    <h5 class="card-header mauve-gradient text-white">Prescription Details</h5>
     <div class="card-body" *ngIf="prescriptionstatus;else notShow">
         <p>
             Prescription already uploaded

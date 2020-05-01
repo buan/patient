@@ -12,6 +12,7 @@ import { PatientAppointmentAddComponent } from './patient/patient-appointment-ad
 import { PatientSearchComponent } from './patient/patient-search/patient-search.component';
 import { PatientAddDoctorComponent } from './patient/patient-add-doctor/patient-add-doctor.component';
 import { NumberDirective } from './patient/shared/numbers-only.directive';
+import { WINDOW_PROVIDERS } from 'window.providers';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import { NumberDirective } from './patient/shared/numbers-only.directive';
     HttpClientModule,
     NoopAnimationsModule
   ],
-  providers: [DatePipe],
+  providers: [DatePipe,WINDOW_PROVIDERS],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
