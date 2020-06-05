@@ -13,6 +13,7 @@ import { PatientSearchComponent } from './patient/patient-search/patient-search.
 import { PatientAddDoctorComponent } from './patient/patient-add-doctor/patient-add-doctor.component';
 import { NumberDirective } from './patient/shared/numbers-only.directive';
 import { WINDOW_PROVIDERS } from 'window.providers';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { WINDOW_PROVIDERS } from 'window.providers';
     PatientAppointmentAddComponent,
     PatientSearchComponent,
     PatientAddDoctorComponent,
-    NumberDirective
+    NumberDirective,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

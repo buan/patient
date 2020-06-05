@@ -21,20 +21,31 @@ export class PatientServicesService {
   private _urlforcreatepatientappointment: string = "http://localhost/drupal8dev/entity/node?_format=hal_json";
   private _urltovalidateuser: string = "http://localhost/drupal8dev/findonepatient";
   private _urltoaddoctor: string = "http://localhost/drupal8dev/entity/taxonomy_term?_format=hal_json";
+  private _urltoaddtreatmenttype: string = "http://localhost/drupal8dev/entity/node?_format=hal_json";
   private _urltocheckforprescription: string = "http://localhost/drupal8dev/checkprescription";
   private _urltocheckforuploadprescription: string = "http://localhost/drupal8dev/entity/file?_format=hal_json";
-  private headers: any = { 'Content-Type': 'application/hal+json', 'Authorization': 'Basic YWRtaW46YWRtaW4=', 'X-CSRF-Token': 'wGq8Jno6Sd8zCNa7I70vV7dWWiZtEtrbRrM9739zwhI' }
+  private headers: any = { 'Content-Type': 'application/hal+json', 'Authorization': 'Basic 4S2pEqZ5_w_AxD7bJ2tP7NqOEFlA0nzGPmmUUKbXzOU', 'X-CSRF-Token': 'wGq8Jno6Sd8zCNa7I70vV7dWWiZtEtrbRrM9739zwhI' }
 
   constructor(private http: HttpClient, @Inject(WINDOW) private window: Window) { }
+
+  getAdmin():boolean{
+    return false;
+  }
 
   getHostname(): string {
     return this.window.location.hostname;
   }
 
-  getPatientReferred(): Observable<IEmployee[]> {
+  getPatientReferred(key): Observable<IEmployee[]> {
+    console.log(key)
     return this.http.get<IEmployee[]>(this._urlforpatientreferred);
   }
+
+  gettoken() {
+    return this.http.get("http://localhost/drupal8dev/rest/session/token", { responseType: 'text' });
+  }
   getBranch(): Observable<IEmployee[]> {
+    console.log(this.gettoken());
     console.log(this.getHostname());
     return this.http.get<IEmployee[]>(this._urlforbranch);
   }
@@ -224,7 +235,8 @@ export class PatientServicesService {
     return this.http.post<IEmployee[]>(this._urlforcreatepatientappointment, data, { headers: this.headers });
   }
 
-  addoctor(value1, value2): Observable<IEmployee[]> {
+  addoctor(value1, value2, key): Observable<IEmployee[]> {
+    console.log(key)
     let data = {
 
       "_links": {
@@ -255,8 +267,43 @@ export class PatientServicesService {
       ]
 
     };
-    return this.http.post<IEmployee[]>(this._urltoaddoctor, data, { headers: this.headers });
+    return this.http.post<IEmployee[]>(this._urltoaddoctor, data, { headers: { 'Content-Type': 'application/hal+json', 'Authorization': 'Basic YWRtaW46YWRtaW4=', 'X-CSRF-Token': key } });
   }
+
+  addtrttype(trtvalue1, trtvalue2): Observable<IEmployee[]> {
+    let data = {
+
+      "_links": {
+
+        "type": {
+
+          "href": "http://localhost/drupal8dev/rest/type/node/treatment"
+
+        }
+
+      },
+      "title": [
+        {
+          "value": trtvalue1.value
+        }
+      ],
+
+
+      "field_treatment_name": [{
+        "value": trtvalue1.value
+      }],
+
+      "field_disease": [{
+        "target_id": trtvalue2.value
+      }
+
+
+      ]
+
+    };
+    return this.http.post<IEmployee[]>(this._urltoaddtreatmenttype, data, { headers: this.headers });
+  }
+
   addME(value1): Observable<IEmployee[]> {
     let data = {
 
@@ -278,6 +325,33 @@ export class PatientServicesService {
 
       "name": [{
         "value": value1.value
+      }]
+
+    };
+    return this.http.post<IEmployee[]>(this._urltoaddoctor, data, { headers: this.headers });
+  }
+
+  adddepartment(depvalue1): Observable<IEmployee[]> {
+    let data = {
+
+      "_links": {
+
+        "type": {
+
+          "href": "http://localhost/drupal8dev/rest/type/taxonomy_term/disease"
+
+        }
+
+      },
+      "vid": [
+        {
+          "target_id": "disease"
+        }
+      ],
+
+
+      "name": [{
+        "value": depvalue1.value
       }]
 
     };

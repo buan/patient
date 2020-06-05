@@ -30,6 +30,7 @@ export class PatientRegistrationComponent implements OnInit {
   uid: IEmployee[];
   createpatientresult: any;
   today: number = Date.now();
+  key: string;
   constructor(private fb: FormBuilder, public datepipe: DatePipe, private _patientService: PatientServicesService, private router: Router) { }
 
 
@@ -81,10 +82,12 @@ export class PatientRegistrationComponent implements OnInit {
 
   ngOnInit() {
 
+    this._patientService.gettoken().subscribe(data=>this.key=data)
+
     this._patientService.getBranch()
       .subscribe(data => this.branches = data);
 
-    this._patientService.getPatientReferred()
+    this._patientService.getPatientReferred(this.key)
       .subscribe(data => this.patientreferred = data);
 
     this._patientService.getDepartments()

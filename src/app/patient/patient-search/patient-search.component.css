@@ -1,3 +1,4 @@
 .mauve-gradient{
     background: linear-gradient(45deg, #6f42c1, transparent);
+    color: white !important;
 }

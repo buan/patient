@@ -41,6 +41,7 @@ export class PatientAppointmentAddComponent implements OnInit {
   nodeid: any;
   showaddresssaved: boolean = false;
   showappointmentsaved: boolean = false;
+  key: string;
 
 
   constructor(private _patientService: PatientServicesService, private fb: FormBuilder, private router: Router) { }
@@ -61,6 +62,8 @@ export class PatientAppointmentAddComponent implements OnInit {
 
   };
   ngOnInit() {
+    this._patientService.gettoken().subscribe(data=>{this.key=data;console.log(this.key
+      )})
     this.addappointment = this.fb.group({
       // PatientAppointmentDate: [''],
       VisitingBranch: ['', Validators.required],
@@ -83,8 +86,9 @@ export class PatientAppointmentAddComponent implements OnInit {
     this._patientService.getBranch()
       .subscribe(data => this.branches = data);
 
-    this._patientService.getPatientReferred()
-      .subscribe(data => this.patientreferred = data);
+    this._patientService.getPatientReferred(this.key)
+      .subscribe(data => {this.patientreferred = data;
+        console.log(data)});
 
     this._patientService.getDepartments()
       .subscribe(data => this.departments = data);
