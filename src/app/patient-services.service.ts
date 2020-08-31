@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IEmployee } from './patient';
 import { Observable } from 'rxjs/internal/Observable';
 import { WINDOW } from 'window.providers';
@@ -24,12 +24,38 @@ export class PatientServicesService {
   private _urltoaddtreatmenttype: string = "http://localhost/drupal8dev/entity/node?_format=hal_json";
   private _urltocheckforprescription: string = "http://localhost/drupal8dev/checkprescription";
   private _urltocheckforuploadprescription: string = "http://localhost/drupal8dev/entity/file?_format=hal_json";
-  private headers: any = { 'Content-Type': 'application/hal+json', 'Authorization': 'Basic 4S2pEqZ5_w_AxD7bJ2tP7NqOEFlA0nzGPmmUUKbXzOU', 'X-CSRF-Token': 'wGq8Jno6Sd8zCNa7I70vV7dWWiZtEtrbRrM9739zwhI' }
+
+   httpOptions:any = {
+    headers: new HttpHeaders({
+      'Content-Type':  'application/json',
+    })
+  };
 
   constructor(private http: HttpClient, @Inject(WINDOW) private window: Window) { }
 
   getAdmin():boolean{
     return false;
+  }
+
+  getbasicauth() {
+    return localStorage.getItem('basicaouth');
+  }
+
+  getcsrf() {
+    return localStorage.getItem('csrf');
+  }
+  
+  login(username, password): any {
+    console.log(username);
+    console.log(password);
+    return this.http.post('http://localhost/drupal8dev/user/login?_format=json', { name: username, pass: password });
+  }
+
+  logout():any{
+    var lt=localStorage.getItem('logouttoken');
+    console.log('http://localhost/drupal8dev/user/logout?_format=json&token='+lt)
+    return this.http.post('http://localhost/drupal8dev/user/logout?_format=json&token='+lt,{headers:this.httpOptions});
+   
   }
 
   getHostname(): string {
@@ -41,12 +67,7 @@ export class PatientServicesService {
     return this.http.get<IEmployee[]>(this._urlforpatientreferred);
   }
 
-  gettoken() {
-    return this.http.get("http://localhost/drupal8dev/rest/session/token", { responseType: 'text' });
-  }
   getBranch(): Observable<IEmployee[]> {
-    console.log(this.gettoken());
-    console.log(this.getHostname());
     return this.http.get<IEmployee[]>(this._urlforbranch);
   }
 
@@ -81,7 +102,7 @@ export class PatientServicesService {
     return this.http.get<IEmployee[]>(this._urlforappointmentfetch + "/" + patientreg);
   }
   validateuser(uid): Observable<IEmployee[]> {
-    console.log(this._urltovalidateuser + "/" + uid)
+    // console.log(this._urltovalidateuser + "/" + uid)
     return this.http.get<IEmployee[]>(this._urltovalidateuser + "/" + uid);
   }
 
@@ -148,7 +169,7 @@ export class PatientServicesService {
 
 
     };
-    return this.http.post<IEmployee[]>(this._urlforcreatepatient, data, { headers: this.headers });
+    return this.http.post<IEmployee[]>(this._urlforcreatepatient, data);
   }
   createpatientappointment(value, patientreference): Observable<IEmployee[]> {
     //save as a patient appointment
@@ -190,7 +211,7 @@ export class PatientServicesService {
       "field_purpose": [{ "value": value.PurposeofVisit }],
 
     };
-    return this.http.post<IEmployee[]>(this._urlforcreatepatientappointment, data, { headers: this.headers });
+    return this.http.post<IEmployee[]>(this._urlforcreatepatientappointment, data);
   }
   createanotherappointment(value, patientreference): Observable<IEmployee[]> {
     //save as a patient appointment
@@ -232,7 +253,7 @@ export class PatientServicesService {
       "field_purpose": [{ "value": value.PurposeofVisit }],
 
     };
-    return this.http.post<IEmployee[]>(this._urlforcreatepatientappointment, data, { headers: this.headers });
+    return this.http.post<IEmployee[]>(this._urlforcreatepatientappointment, data);
   }
 
   addoctor(value1, value2, key): Observable<IEmployee[]> {
@@ -267,7 +288,7 @@ export class PatientServicesService {
       ]
 
     };
-    return this.http.post<IEmployee[]>(this._urltoaddoctor, data, { headers: { 'Content-Type': 'application/hal+json', 'Authorization': 'Basic YWRtaW46YWRtaW4=', 'X-CSRF-Token': key } });
+    return this.http.post<IEmployee[]>(this._urltoaddoctor, data);
   }
 
   addtrttype(trtvalue1, trtvalue2): Observable<IEmployee[]> {
@@ -301,7 +322,7 @@ export class PatientServicesService {
       ]
 
     };
-    return this.http.post<IEmployee[]>(this._urltoaddtreatmenttype, data, { headers: this.headers });
+    return this.http.post<IEmployee[]>(this._urltoaddtreatmenttype, data);
   }
 
   addME(value1): Observable<IEmployee[]> {
@@ -328,7 +349,7 @@ export class PatientServicesService {
       }]
 
     };
-    return this.http.post<IEmployee[]>(this._urltoaddoctor, data, { headers: this.headers });
+    return this.http.post<IEmployee[]>(this._urltoaddoctor, data);
   }
 
   adddepartment(depvalue1): Observable<IEmployee[]> {
@@ -355,7 +376,7 @@ export class PatientServicesService {
       }]
 
     };
-    return this.http.post<IEmployee[]>(this._urltoaddoctor, data, { headers: this.headers });
+    return this.http.post<IEmployee[]>(this._urltoaddoctor, data);
   }
 
   updatepatientdetails(nid, contact, address): Observable<IEmployee[]> {
@@ -383,11 +404,9 @@ export class PatientServicesService {
       ]
 
     };
-    return this.http.patch<IEmployee[]>("http://localhost/drupal8dev/user/" + nid + "?_format=hal_json", data, { headers: this.headers });
+    return this.http.patch<IEmployee[]>("http://localhost/drupal8dev/user/" + nid + "?_format=hal_json", data);
 
   }
-
-
 
   checkprescription(regvalue): Observable<IEmployee[]> {
     console.log(regvalue);
@@ -424,7 +443,7 @@ export class PatientServicesService {
       }]
     };
     console.log(type);
-    return this.http.post<IEmployee[]>(this._urltocheckforuploadprescription, data, { headers: this.headers });
+    return this.http.post<IEmployee[]>(this._urltocheckforuploadprescription, data);
   }
 
   attachprescription(value, regvalue, nid): Observable<IEmployee[]> {
@@ -453,6 +472,6 @@ export class PatientServicesService {
       ]
 
     }
-    return this.http.patch<IEmployee[]>("http://localhost/drupal8dev/node/" + nid + "?_format=hal_json", data, { headers: this.headers });
+    return this.http.patch<IEmployee[]>("http://localhost/drupal8dev/node/" + nid + "?_format=hal_json", data);
   }
 }

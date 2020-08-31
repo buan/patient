@@ -19,25 +19,25 @@ export class PatientAppointmentAddComponent implements OnInit {
   prescription_upload_status: boolean = false;
   addappointment: FormGroup;
   addcontact: FormGroup;
-  branches: import("d:/patient/patient-services/src/app/patient").IEmployee[];
-  patientreferred: import("d:/patient/patient-services/src/app/patient").IEmployee[];
-  departments: import("d:/patient/patient-services/src/app/patient").IEmployee[];
-  purpose: import("d:/patient/patient-services/src/app/patient").IEmployee[];
+  branches: any;
+  patientreferred: any;
+  departments: any;
+  purpose: any;
   selectedpurpose: any;
   showtreatmenttype: boolean;
   showprescription: boolean;
-  prescriptionstatus: import("d:/patient/patient-services/src/app/patient").IEmployee[];
+  prescriptionstatus: any;
   patientForm: any;
   selecteddepartments: any;
   showpurpose: boolean;
   showappointment: boolean = false;
   showdetailsupdate: boolean = false;
-  treatment: import("d:/patient/patient-services/src/app/patient").IEmployee[];
+  treatment: any;
   addprescription: FormGroup; upload
   image: string | ArrayBuffer;
   registrationvalue: string;
   uploadtype: File;
-  getfid: import("d:/patient/patient-services/src/app/patient").IEmployee[];
+  getfid: any;
   nodeid: any;
   showaddresssaved: boolean = false;
   showappointmentsaved: boolean = false;
@@ -62,8 +62,6 @@ export class PatientAppointmentAddComponent implements OnInit {
 
   };
   ngOnInit() {
-    this._patientService.gettoken().subscribe(data=>{this.key=data;console.log(this.key
-      )})
     this.addappointment = this.fb.group({
       // PatientAppointmentDate: [''],
       VisitingBranch: ['', Validators.required],

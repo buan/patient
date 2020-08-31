@@ -82,8 +82,6 @@ export class PatientRegistrationComponent implements OnInit {
 
   ngOnInit() {
 
-    this._patientService.gettoken().subscribe(data=>this.key=data)
-
     this._patientService.getBranch()
       .subscribe(data => this.branches = data);
 
@@ -126,7 +124,7 @@ export class PatientRegistrationComponent implements OnInit {
         othersreason: [''],
       }),
       VisitingBranch: ['', Validators.required],
-      PatientReferredBy: ['', Validators.required],
+      PatientReferredBy: [''],
       SelectDepartment: ['', Validators.required],
       PurposeofVisit: ['', Validators.required],
       TreatmentType: [''],

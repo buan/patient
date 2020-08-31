@@ -6,16 +6,18 @@ import { PatientSearchComponent } from './patient/patient-search/patient-search.
 import { PatientAddDoctorComponent } from './patient/patient-add-doctor/patient-add-doctor.component';
 import { LoginGuard } from './login.guard';
 import { LoginComponent } from './login/login.component';
+import { LogoutComponent } from './login/logout.component';
 
 
 
 const routes: Routes = [
-  { path: 'create', component: PatientRegistrationComponent },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
+  { path: 'create', component: PatientRegistrationComponent },
   { path: 'addappointment', component: PatientAppointmentAddComponent },
   { path: 'search', component: PatientSearchComponent },
+  { path: 'logout', component: LogoutComponent },
   { path: 'admin-services', component: PatientAddDoctorComponent,canActivate:[LoginGuard] }, 
-  { path: '', redirectTo: '/create', pathMatch: 'full' }
   ];
   
 

@@ -21,10 +21,10 @@
             </div>
         </div>
 
-        
+
 
         <div class="container-fluid mt-2">
-            
+
             <div class="card border border-danger mx-auto" *ngIf="checkuser && showuserstatus">
 
                 <div class="card-header mauve-gradient text-white" ng-repeat="checkusers in checkuser">
@@ -45,52 +45,57 @@
                         {{checkusers.field_patient_contact_number}}</li>
                     <li class="list-group-item"><span class="font-weight-bold">Patient Prescription</span>: <a
                             href="{{checkusers.field_patient_referred_prescript}}" download>Download</a></li>
-                    {{checkusers.field_patient_referred_prescript}}
-                    <li class="list-group-item">Vestibulum at eros</li>
+
                 </ul>
             </div>
 
             <div class="card border border-danger mx-auto" *ngIf="checkappointment && showappointmentstatus">
 
-            <table mat-table [dataSource]="checkappointment" class="mat-elevation-z8">
+                <table mat-table [dataSource]="checkappointment" class="mat-elevation-z8">
 
-                <!--- Note that these columns can be defined in any order.
+                    <!--- Note that these columns can be defined in any order.
                       The actual rendered columns are set as a property on the row definition" -->
-              
-                <!-- Branch Column -->
-                <ng-container matColumnDef="Branch">
-                  <th mat-header-cell *matHeaderCellDef> Branch </th>
-                  <td mat-cell *matCellDef="let element"> {{element.field_branch_name}} </td>
-                </ng-container>
-              
-                <!-- Doctor Referred Column -->
-                <ng-container matColumnDef="Doctor Referred">
-                  <th mat-header-cell *matHeaderCellDef> Name </th>
-                  <td mat-cell *matCellDef="let element"> {{element.field_doctor_referred}} </td>
-                </ng-container>
-              
-                <!-- Treatment Type Column -->
-                <ng-container matColumnDef="Treatment Type">
-                  <th mat-header-cell *matHeaderCellDef> Treatment Type</th>
-                  <td mat-cell *matCellDef="let element"> {{element.field_type_of_treatment}} </td>
-                </ng-container>
-              
-                <!-- Visit Date Column -->
-                <ng-container matColumnDef="Visit Date">
-                  <th mat-header-cell *matHeaderCellDef> Visit Date </th>
-                  <td mat-cell *matCellDef="let element"> {{element.field_visit_date}} </td>
-                </ng-container>
 
-                <!-- Department Column -->
-                <ng-container matColumnDef="Department">
-                  <th mat-header-cell *matHeaderCellDef> Department </th>
-                  <td mat-cell *matCellDef="let element"> {{element.field_department}} </td>
-                </ng-container>
-              
-                <tr mat-header-row *matHeaderRowDef="displayedColumns" [ngClass]="{'mauve-gradient': true,'text-white': true }"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-              </table>
-              </div>
-              
-              
+                    <!-- Branch Column -->
+                    <ng-container matColumnDef="Branch">
+                        <th mat-header-cell *matHeaderCellDef> Branch </th>
+                        <td mat-cell *matCellDef="let element"> {{element.field_branch_name}} </td>
+                    </ng-container>
+
+                    <!-- Doctor Referred Column -->
+                    <ng-container matColumnDef="Doctor Referred">
+                        <th mat-header-cell *matHeaderCellDef> Name </th>
+                        <td mat-cell *matCellDef="let element"> {{element.field_doctor_referred}} </td>
+                    </ng-container>
+
+                    <!-- Treatment Type Column -->
+                    <ng-container matColumnDef="Treatment Type">
+                        <th mat-header-cell *matHeaderCellDef> Treatment Type</th>
+                        <td mat-cell *matCellDef="let element"> {{element.field_type_of_treatment}} </td>
+                    </ng-container>
+
+                    <!-- Visit Date Column -->
+                    <ng-container matColumnDef="Visit Date">
+                        <th mat-header-cell *matHeaderCellDef> Visit Date </th>
+                        <td mat-cell *matCellDef="let element"> {{element.field_visit_date}} </td>
+                    </ng-container>
+
+                    <!-- Department Column -->
+                    <ng-container matColumnDef="Department">
+                        <th mat-header-cell *matHeaderCellDef> Department </th>
+                        <td mat-cell *matCellDef="let element"> {{element.field_department}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Purpose">
+                        <th mat-header-cell *matHeaderCellDef> Purpose </th>
+                        <td mat-cell *matCellDef="let element"> {{element.field_purpose}} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"
+                        [ngClass]="{'mauve-gradient': true,'text-white': true }"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+
+
         </div>

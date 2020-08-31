@@ -8,7 +8,7 @@ import { PatientServicesService } from 'src/app/patient-services.service';
 })
 export class PatientAddDoctorComponent implements OnInit {
   image: string | ArrayBuffer;
-  purpose: import("d:/patient/patient-services/src/app/patient").IEmployee[];
+  purpose: any;
   doctorsavedstatus: boolean = false;
   dname1: string;
   dname2: string;
@@ -16,7 +16,7 @@ export class PatientAddDoctorComponent implements OnInit {
   depnamevalue2: string
   me: string;
   dep: string;
-  mes: import("d:/patient/patient-services/src/app/patient").IEmployee[];
+  mes: any;
   showmedicalexecutive: boolean = false;
   showaddoctor: boolean = false;
   showdepartment: boolean = false;
@@ -24,7 +24,7 @@ export class PatientAddDoctorComponent implements OnInit {
 
   mesavedstatus: boolean = false;
   disablestatus: boolean = false;
-  deplist: import("d:/patient/patient-services/src/app/patient").IEmployee[];
+  deplist: any;
   departmentsavedstatus: boolean = false;
   treatmenttypesavedstatus: boolean = false;
   key: string;
@@ -32,7 +32,7 @@ export class PatientAddDoctorComponent implements OnInit {
   constructor(private _patientService: PatientServicesService) { }
 
   ngOnInit() {
-this._patientService.gettoken().subscribe(data=>this.key=data)
+
   }
   doctoradd(value1, value2) {
     this._patientService.addoctor(value1, value2,this.key)
